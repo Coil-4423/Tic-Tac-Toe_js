@@ -1,0 +1,78 @@
+body{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1{
+    margin: 0 auto;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: auto;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
+    background-color: chocolate;
+    padding: 5px;
+    border-radius:2.5%;
+    /* display: none; */
+}
+
+.row{
+    display:flex;
+}
+
+.cell{
+    /* margin:2rem; */
+    /* font-size: 4rem; */
+    background-color: aqua;
+    border:2px solid black;
+    border-radius:5%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:0;
+    position:relative;
+    font-size: 80px;
+    text-align: center;
+    margin:0 auto;
+    padding:0;
+    vertical-align: middle;
+}
+
+.cell p{
+
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
+}
+
+.message{
+    margin:2rem;
+    width:50vw;
+    padding:0.5rem;
+    border: 2px solid black;
+    text-align: center;
+    background-color: rgb(255, 252, 170);
+}
+
+.play-mode{
+    margin:1rem;
+}
+
+.menu{
+    margin-top: 2rem;
+    border:2px solid black;
+}
+
+button{
+    width:20vw
+}
+
