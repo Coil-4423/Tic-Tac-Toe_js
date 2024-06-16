@@ -135,17 +135,6 @@ function tile(i, k) {
   return row[i].children[k].innerHTML;
 }
 
-// function noChosenTiles() {
-//   let tiles = [];
-//   for (let i = 0; i < 3; i++) {
-//     for (let k = 0; k < 3; k++) {
-//       if (tile(i, k) === "") {
-//         tiles.push([i, k]);
-//       }
-//     }
-//   }
-//   return tiles;
-// }
 function noChosenTiles() {
   let tiles = [];
   for (let i = 0; i < 3; i++) {
@@ -186,98 +175,46 @@ function notEnd(){
   state.result !== "draw")
 }
 
-function handleClickTile(i,k) {
+function handleClickTile(i, k) {
   row[i].children[k].innerHTML = turn;
   state.filledTile++;
-  if(turn == "o") {
-    boardState.o.push([i, k]);
-    if(checkWin(boardState, turn)){
-      state.result = "win";
-      state.winner = `${turn}`;
-    }else if(state.filledTile==9){
-      state.result = 'draw';
-    }
-    turn='x'
-  }else{
-    boardState.x.push([i, k]);
-    if(checkWin(boardState, turn)){
-      state.result = "win";
-      state.winner = `${turn}`;
-    }else if(state.filledTile==9){
-      state.result = 'draw';
-    }
-    turn = "o"
+  
+  boardState[turn].push([i, k]);
+  
+  if (checkWin(boardState, turn) || state.filledTile === 9) {
+    state.result = checkWin(boardState, turn) ? "win" : "draw";
+    state.winner = checkWin(boardState, turn) ? turn : null;
+  } else {
+    turn = turn === "o" ? "x" : "o";
   }
   state.message();
 }
 
 function checkWin(boardState, turn) {
-  let isWin = winCombos.some((winCombo) => {
-    return winCombo.every((coord) => {
-      if (turn == "o") {
-        return boardState.o.some(
-          (boardCoord) =>
-            boardCoord[0] === coord[0] && boardCoord[1] === coord[1]
-        );
-      } else {
-        return boardState.x.some(
-          (boardCoord) =>
-            boardCoord[0] === coord[0] && boardCoord[1] === coord[1]
-        );
-      }
-    });
-  });
-  return isWin;  
+  return winCombos.some(winCombo => winCombo.every(coord => 
+    (turn === "o" ? boardState.o : boardState.x).some(boardCoord => 
+      boardCoord[0] === coord[0] && boardCoord[1] === coord[1]
+    )
+  ));
 }
 
 gameStart.addEventListener("click", function () {
-  if (AIMode === false) {
-    for (let i = 0; i < row.length; i++) {
-      for (let k = 0; k < row[i].children.length; k++) {
-        row[i].children[k].addEventListener("click", function () {
-          if (tile(i, k) === '' && notEnd()) {
-            handleClickTile(i,k);
+  if(humanPlayer==='x'){if (notEnd() && AIMode) {
+    const [rowIndex, columnIndex] = aiChoiceIndex();
+    handleClickTile(rowIndex, columnIndex);
+  }}//fist turn
+  for (let i = 0; i < row.length; i++) {
+    for (let k = 0; k < row[i].children.length; k++) {
+      const handleClick = () => {
+        if (tile(i, k) === '' && notEnd()) {
+          handleClickTile(i, k);
+          if (notEnd() && AIMode) {
+            const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, aiPlayer).move : aiChoiceIndex();
+            handleClickTile(rowIndex, columnIndex);
           }
-        })
-      }
-    }
-  } else {
-    if (humanPlayer == "x") {
-      let randomTileIndex = aiChoiceIndex();
-      let rowIndex = randomTileIndex[0];
-      let columnIndex = randomTileIndex[1];
-      handleClickTile(rowIndex,columnIndex);
-    }
-    for (let i = 0; i < row.length; i++) {
-      for (let k = 0; k < row[i].children.length; k++) {
-        row[i].children[k].addEventListener("click", function () {
-          if (tile(i, k) === '' && notEnd()) {
-            console.log("before fill");
-            handleClickTile(i,k)
-            if (notEnd()) {
-              let randomTileIndex = aiChoiceIndex();
-
-              console.log(randomTileIndex);
-              if (AIAdvanced == false) {
-                let rowIndex = randomTileIndex[0];
-                let columnIndex = randomTileIndex[1];
-                handleClickTile(rowIndex,columnIndex);
-              } else {
-                console.log('advancedAI')
-                console.log(state);
-                let rowIndex = minimax(boardState,aiPlayer).move[0];
-                let columnIndex = minimax(boardState,aiPlayer).move[1];
-                console.log(state)
-                console.log(minimax(boardState,aiPlayer));
-                console.log('before handle');
-                console.log(state)
-                handleClickTile(rowIndex,columnIndex);
-                console.log(state)
-              }
-            }
-          }
-        });
-      }
+        }
+      };
+      row[i].children[k].addEventListener("click", handleClick);
     }
   }
 });
