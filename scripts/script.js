@@ -1,9 +1,3 @@
-// vsAI.addEventListener("click", function () {
-//     console.log('clicked')
-//     mode.style.display='none';
-//     vsAI.style.display='none';
-//     vshuman.style.display='none';
-// });
 
 const winCombos = [
   [
@@ -58,12 +52,19 @@ const row = document.querySelectorAll(".row");
 const message = document.getElementById("message");
 const O = document.getElementById("o");
 const X = document.getElementById("x");
-const gameStart = document.getElementById("gamestart");
-const firstTurn = "o";
-const secondTurn = "x";
+const first = document.getElementById('first');
+const second =document.getElementById('second')
+const newGame = document.getElementById("newgame");
+const aichoice = document.getElementById('aichoice');
+const game =document.getElementById("game");
+const mode = document.getElementById('mode');
+const mode2 =document.getElementById('mode2');
+
+let isFirst = true;
 let humanPlayer = "o";
 let aiPlayer = "x";
-let turn = firstTurn;
+
+let turn;
 
 let boardState = {
   o: [],
@@ -85,7 +86,14 @@ class State {
   }
 
   boardReset() {
-    turn = "o";
+
+      if(isFirst){
+        console.log(humanPlayer)
+        turn = humanPlayer;
+      }else{
+        console.log(aiPlayer)
+        turn = aiPlayer;
+      }
     for (let i = 0; i < row.length; i++) {
       for (let k = 0; k < row[i].children.length; k++) {
         row[i].children[k].innerHTML = "";
@@ -109,27 +117,70 @@ playagin.addEventListener("click", function () {
 
 menu.addEventListener("click", function () {
   mode.style.display = "block";
-  board.style.display = "none";
+  game.style.display = "none";
 });
+
+vshuman.addEventListener('click',function(){
+  AIMode=false;
+  gameModeDisplay();
+})
 
 randomAI.addEventListener("click", function () {
   AIMode = true;
   AIAdvanced = false;
+  gameModeDisplay();
 });
 advancedAI.addEventListener("click", function () {
   AIMode = true;
   AIAdvanced = true;
+  gameModeDisplay();
 });
 
+newGame.addEventListener('click',function(){
+  mode.style.display='none'
+  game.style.display='block';
+  state.boardReset();
+  gameStart();
+})
+
+
+
 O.addEventListener("click", function () {
-  humanPlayer = "o";
-  aiPlayer = "x";
+  humanPlayer='o';
+  aiPlayer = 'x' ;
 });
 
 X.addEventListener("click", function () {
-  humanPlayer = "x";
-  aiPlayer = "o";
+  humanPlayer='x';
+  aiPlayer='o';
 });
+
+first.addEventListener('click',function(){
+  isFirst=true;
+})
+second.addEventListener('click',function(){
+  isFirst=false;
+})
+
+
+
+function gameModeDisplay(){
+  gameMode.innerHTML= AIMode? (AIAdvanced? `vsAdvancedAI`:`vsRandomAI`):`vsHuman`;
+} 
+
+function turnDisplay(){
+  gameMode.innerHTML= turn=='o'? 'o':`vsHuman`;
+}
+// if(AIMode){
+//   if(AIAdvanced){
+//   gameMode.innerHTML= AImode ? `AIAdvanced`:`vsHuman`;
+//   }else{
+//     gameMode.innerHTML=`randomAI`
+//   }
+// }else{
+//   gameMode.innerHTML=`vsHuman`
+// }
+
 
 function tile(i, k) {
   return row[i].children[k].innerHTML;
@@ -175,6 +226,8 @@ function notEnd(){
   state.result !== "draw")
 }
 
+
+
 function handleClickTile(i, k) {
   row[i].children[k].innerHTML = turn;
   state.filledTile++;
@@ -185,7 +238,9 @@ function handleClickTile(i, k) {
     state.result = checkWin(boardState, turn) ? "win" : "draw";
     state.winner = checkWin(boardState, turn) ? turn : null;
   } else {
+    console.log(turn)
     turn = turn === "o" ? "x" : "o";
+    console.log(turn)
   }
   state.message();
 }
@@ -198,11 +253,24 @@ function checkWin(boardState, turn) {
   ));
 }
 
-gameStart.addEventListener("click", function () {
-  if(humanPlayer==='x'){if (notEnd() && AIMode) {
-    const [rowIndex, columnIndex] = aiChoiceIndex();
-    handleClickTile(rowIndex, columnIndex);
-  }}//fist turn
+// gameStart.addEventListener("click", function () {
+//   // if(humanPlayer==='x'){if (notEnd() && AIMode) {
+
+//   //     const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
+//   //     console.log(minimax(boardState, turn).move);
+//   //     handleClickTile(rowIndex, columnIndex);
+//   //   }}
+  
+// });
+
+function gameStart(){
+  if(!isFirst){
+    if (notEnd() && AIMode) {
+      const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
+      // console.log(minimax(boardState, turn).move);
+      handleClickTile(rowIndex, columnIndex);
+    }
+  }
   for (let i = 0; i < row.length; i++) {
     for (let k = 0; k < row[i].children.length; k++) {
       const handleClick = () => {
@@ -217,7 +285,16 @@ gameStart.addEventListener("click", function () {
       row[i].children[k].addEventListener("click", handleClick);
     }
   }
-});
+aichoice.addEventListener('click',()=>{
+  if (notEnd() && AIMode) {
+    const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
+    // console.log(minimax(boardState, turn).move);
+    handleClickTile(rowIndex, columnIndex);
+  }
+})
+}
+
+
 
 function minimax(newBoard, player) {
   let availSpots = noChosenTiles();
