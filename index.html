@@ -11,6 +11,7 @@
     <h1>tic-tac-toe</h1>
     <div class="mode" id="mode">
         <div class="select">
+            <h2>select game mode:</h2>
             <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday"
                 id='vsAdvancedAI' value="advancedAI" checked />vs advancedAI
             <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday"
@@ -19,19 +20,19 @@
                 id='vshuman' value="human" />vs human
         </div>
         <div class="select">
-                    <input class='selectturn' id="o" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="o" checked>o</button>
-        <input class='selectturn' id="x" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="x">x</button>
+            <h2>select o or x:</h2>
+            <input class='selectturn' id="o" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="o" checked>o</button>
+            <input class='selectturn' id="x" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="x">x</button>
         </div>
         <div class="select">
+            <h2>select first or select:</h2>
             <input class='firstsecond' id="first" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="first"
-                checked>first
+            checked>first
             <input class='firstsecond' id="second" onclick="checkOnlyOne(this.value,this.className);" type="radio"
-                value="second">second
+            value="second">second
         </div>
-        <button id="newgame">start new game
-    </div>
-    <div class="mode2" id="mode2">
-        
+        <button id="newgame">start new game</button>
+            <button class="exit" id="exit">exit</button>
     </div>
     
     <div class="game" id="game">
@@ -59,7 +60,7 @@
         
         <div id="turn"></div>
         <!-- <button id="gamestart">start</button> -->
-        <button id="aichoice">aichoice</button>
+        <!-- <button id="aichoice">aichoice</button> -->
         <button class='playagain' id="playagain">Play again</button>
         <button id="goback">go back</button>
         <div class="menu" id="menu">menu</div>
