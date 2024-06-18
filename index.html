@@ -10,17 +10,25 @@
 <body>
     <h1>tic-tac-toe</h1>
     <div class="mode" id="mode">
-        <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday" id='vsAdvancedAI' value="advancedAI" checked/>vs advancedAI
-        <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday" id='vshuman' value="human" />vs randomAI
-        <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday" id='vsRandomAI' value="randomAI" />vs human
-        <!-- <button class="vsAI" id="vsRandomAI">vs randomAI</button>
-        <button class="vsAI" id="vsAdvancedAI">vs advancedAI</button>
-        <button class="vshuman" id="vshuman">vs human</button> -->
-        <input class='selectturn' id="o" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="o" checked>o</button>
+        <div class="select">
+            <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday"
+                id='vsAdvancedAI' value="advancedAI" checked />vs advancedAI
+            <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday"
+                id='vsRandomAI' value="randomAI" />vs randomAI
+            <input class="selectmode" onclick="checkOnlyOne(this.value,this.className);" type="radio" name="reoccur_weekday"
+                id='vshuman' value="human" />vs human
+        </div>
+        <div class="select">
+                    <input class='selectturn' id="o" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="o" checked>o</button>
         <input class='selectturn' id="x" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="x">x</button>
-        <input class='firstsecond' id="first" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="first" checked>first</button>
-        <input class='firstsecond' id="second" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="second">second</button>
-        <button id="newgame">start new game</button>
+        </div>
+        <div class="select">
+            <input class='firstsecond' id="first" onclick="checkOnlyOne(this.value,this.className);" type="radio" value="first"
+                checked>first
+            <input class='firstsecond' id="second" onclick="checkOnlyOne(this.value,this.className);" type="radio"
+                value="second">second
+        </div>
+        <button id="newgame">start new game
     </div>
     <div class="mode2" id="mode2">
         
@@ -53,6 +61,7 @@
         <!-- <button id="gamestart">start</button> -->
         <button id="aichoice">aichoice</button>
         <button class='playagain' id="playagain">Play again</button>
+        <button id="goback">go back</button>
         <div class="menu" id="menu">menu</div>
     </div>
     <script src="scripts/script.js"></script>

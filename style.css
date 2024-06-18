@@ -85,3 +85,16 @@ button{
     display: none;
 }
 
+.select{
+    margin:2rem;
+    display:flex;
+    align-items:center;
+    
+}
+
+.select input{
+    height: 40px;
+    width: 40px;
+    margin:1rem
+}
+

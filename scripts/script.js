@@ -1,45 +1,12 @@
-
 const winCombos = [
-  [
-    [0, 0],
-    [0, 1],
-    [0, 2],
-  ],
-  [
-    [1, 0],
-    [1, 1],
-    [1, 2],
-  ],
-  [
-    [2, 0],
-    [2, 1],
-    [2, 2],
-  ],
-  [
-    [0, 0],
-    [1, 0],
-    [2, 0],
-  ],
-  [
-    [0, 1],
-    [1, 1],
-    [2, 1],
-  ],
-  [
-    [0, 2],
-    [1, 2],
-    [2, 2],
-  ],
-  [
-    [0, 0],
-    [1, 1],
-    [2, 2],
-  ],
-  [
-    [2, 0],
-    [1, 1],
-    [0, 2],
-  ],
+  [[0, 0],[0, 1],[0, 2]],
+  [[1, 0],[1, 1],[1, 2]],
+  [[2, 0],[2, 1],[2, 2]],
+  [[0, 0],[1, 0],[2, 0]],
+  [[0, 1],[1, 1],[2, 1]],
+  [[0, 2],[1, 2],[2, 2]],
+  [[0, 0],[1, 1],[2, 2]],
+  [[2, 0],[1, 1],[0, 2]],
 ];
 
 const randomAI = document.getElementById("vsRandomAI");
@@ -59,18 +26,16 @@ const aichoice = document.getElementById('aichoice');
 const game =document.getElementById("game");
 const mode = document.getElementById('mode');
 const mode2 =document.getElementById('mode2');
+const goback = document.getElementById('goback');
 
 let isFirst = true;
 let humanPlayer = "o";
 let aiPlayer = "x";
-
 let turn;
-
 let boardState = {
   o: [],
   x: [],
 };
-
 let AIMode = true;
 let AIAdvanced = true;
 
@@ -109,10 +74,12 @@ class State {
     };
   }
 }
+
 const state = new State();
 
 playagin.addEventListener("click", function () {
   state.boardReset();
+  gameStart();
 });
 
 menu.addEventListener("click", function () {
@@ -143,8 +110,6 @@ newGame.addEventListener('click',function(){
   gameStart();
 })
 
-
-
 O.addEventListener("click", function () {
   humanPlayer='o';
   aiPlayer = 'x' ;
@@ -162,7 +127,16 @@ second.addEventListener('click',function(){
   isFirst=false;
 })
 
+aichoice.addEventListener('click',()=>{
+  if (notEnd() && AIMode) {
+    const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
+    // console.log(minimax(boardState, turn).move);
+    console.log('loop')
+    handleClickTile(rowIndex, columnIndex);
+  }
+})
 
+goback.addEventListener('click',function(){handleGoback()})
 
 function gameModeDisplay(){
   gameMode.innerHTML= AIMode? (AIAdvanced? `vsAdvancedAI`:`vsRandomAI`):`vsHuman`;
@@ -171,16 +145,6 @@ function gameModeDisplay(){
 function turnDisplay(){
   gameMode.innerHTML= turn=='o'? 'o':`vsHuman`;
 }
-// if(AIMode){
-//   if(AIAdvanced){
-//   gameMode.innerHTML= AImode ? `AIAdvanced`:`vsHuman`;
-//   }else{
-//     gameMode.innerHTML=`randomAI`
-//   }
-// }else{
-//   gameMode.innerHTML=`vsHuman`
-// }
-
 
 function tile(i, k) {
   return row[i].children[k].innerHTML;
@@ -198,7 +162,6 @@ function noChosenTiles() {
   }
   return tiles;
 }
-
 
 function getRandomTile() {
   let tileIndexArray = [];
@@ -226,7 +189,24 @@ function notEnd(){
   state.result !== "draw")
 }
 
-
+function handleGoback() {
+  console.log(state.filledTile);
+  if (!(checkWin(boardState, turn) || state.filledTile === 9)){
+    if(state.filledTile!==0){
+    console.log('goback')
+    let lastElement;
+  if(turn==='o'){
+    lastElement = boardState.x.pop();
+    turn='x';
+  }else{
+    lastElement = boardState.o.pop();
+    turn='o';
+  }
+  row[lastElement[0]].children[lastElement[1]].innerHTML= '';
+  state.filledTile--;
+  }
+  }
+}
 
 function handleClickTile(i, k) {
   row[i].children[k].innerHTML = turn;
@@ -253,48 +233,32 @@ function checkWin(boardState, turn) {
   ));
 }
 
-// gameStart.addEventListener("click", function () {
-//   // if(humanPlayer==='x'){if (notEnd() && AIMode) {
-
-//   //     const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-//   //     console.log(minimax(boardState, turn).move);
-//   //     handleClickTile(rowIndex, columnIndex);
-//   //   }}
-  
-// });
-
 function gameStart(){
   if(!isFirst){
     if (notEnd() && AIMode) {
-      const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-      // console.log(minimax(boardState, turn).move);
+      // const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
+      const [rowIndex, columnIndex] = aiChoiceIndex();
       handleClickTile(rowIndex, columnIndex);
     }
   }
-  for (let i = 0; i < row.length; i++) {
-    for (let k = 0; k < row[i].children.length; k++) {
-      const handleClick = () => {
-        if (tile(i, k) === '' && notEnd()) {
-          handleClickTile(i, k);
-          if (notEnd() && AIMode) {
-            const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, aiPlayer).move : aiChoiceIndex();
-            handleClickTile(rowIndex, columnIndex);
-          }
-        }
-      };
-      row[i].children[k].addEventListener("click", handleClick);
-    }
-  }
-aichoice.addEventListener('click',()=>{
-  if (notEnd() && AIMode) {
-    const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-    // console.log(minimax(boardState, turn).move);
-    handleClickTile(rowIndex, columnIndex);
-  }
-})
 }
 
-
+for (let i = 0; i < row.length; i++) {
+  for (let k = 0; k < row[i].children.length; k++) {
+    const handleClick = () => {
+      if (tile(i, k) === "" && notEnd()) {
+        handleClickTile(i, k);
+        if (notEnd() && AIMode) {
+          const [rowIndex, columnIndex] = AIAdvanced
+            ? minimax(boardState, aiPlayer).move
+            : aiChoiceIndex();
+          handleClickTile(rowIndex, columnIndex);
+        }
+      }
+    };
+    row[i].children[k].addEventListener("click", handleClick);
+  }
+}
 
 function minimax(newBoard, player) {
   let availSpots = noChosenTiles();
