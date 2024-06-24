@@ -42,13 +42,22 @@ let AIAdvanced = true;
 
 class State {
   constructor() {
-    this.result = null;
-    this.winner = null;
+    this.result = '';
+    this.winner = '';
     this.filledTile = 0;
   }
 
   message() {
-    message.innerHTML = `${this.winner} ${this.result}`;
+    if(this.winner!==''||this.result!==''){
+      if(this.winner==humanPlayer){
+        message.innerHTML = `You ${this.result}`;
+      }else if(this.winner==aiPlayer){
+        message.innerHTML = `Computer ${this.result}`
+      }else{
+        message.innerHTML = `${this.winner} ${this.result}`;
+      }
+    }
+    else message.innerHTML = `Its ${turn} turn`;
   }
 
   boardReset() {
@@ -65,8 +74,8 @@ class State {
         row[i].children[k].innerHTML = "";
       }
     }
-    this.result = null;
-    this.winner = null;
+    this.result = '';
+    this.winner = '';
     this.filledTile = 0;
     this.message();
     boardState = {
@@ -144,7 +153,12 @@ second.addEventListener('click',function(){
 //   }
 // })
 
-goback.addEventListener('click',function(){handleGoback()})
+goback.addEventListener('click',function(){
+  handleGoback();
+  if(AIMode){
+    handleGoback();
+  }
+})
 
 function gameModeDisplay(){
   gameMode.innerHTML= AIMode? (AIAdvanced? `vsAdvancedAI`:`vsRandomAI`):`vsHuman`;
@@ -210,6 +224,7 @@ function handleGoback() {
     lastElement = boardState.o.pop();
     turn='o';
   }
+  state.message();
   row[lastElement[0]].children[lastElement[1]].innerHTML= '';
   state.filledTile--;
   }
@@ -224,7 +239,7 @@ function handleClickTile(i, k) {
   
   if (checkWin(boardState, turn) || state.filledTile === 9) {
     state.result = checkWin(boardState, turn) ? "win" : "draw";
-    state.winner = checkWin(boardState, turn) ? turn : null;
+    state.winner = checkWin(boardState, turn) ? turn : '';
   } else {
     console.log(turn)
     turn = turn === "o" ? "x" : "o";
@@ -253,7 +268,6 @@ function gameStart(){
   if(!isFirst){
     if (notEnd() && AIMode) {
       // const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-      
       if(whileTimeout===false){
         const [rowIndex, columnIndex] = aiChoiceIndex();
         timeout(rowIndex,columnIndex);
@@ -274,7 +288,6 @@ for (let i = 0; i < row.length; i++) {
             const [rowIndex, columnIndex] = AIAdvanced
               ? minimax(boardState, aiPlayer).move
               : aiChoiceIndex();
-
             timeout(rowIndex, columnIndex);
             whileTimeout = true;
           }
