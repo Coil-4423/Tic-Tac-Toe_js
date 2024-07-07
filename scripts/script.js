@@ -27,7 +27,7 @@ const game =document.getElementById("game");
 const mode = document.getElementById('mode');
 const exit =document.getElementById('exit');
 const goback = document.getElementById('goback');
-let whileTimeout = false;
+let isTimeoutActive = false;
 
 let isFirst = true;
 let humanPlayer = "o";
@@ -144,15 +144,6 @@ second.addEventListener('click',function(){
   isFirst=false;
 })
 
-// aichoice.addEventListener('click',()=>{
-//   if (notEnd() && AIMode) {
-//     const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-//     // console.log(minimax(boardState, turn).move);
-//     console.log('loop')
-//     handleClickTile(rowIndex, columnIndex);
-//   }
-// })
-
 goback.addEventListener('click',function(){
   handleGoback();
   if(AIMode){
@@ -213,21 +204,24 @@ function notEnd(){
 
 function handleGoback() {
   console.log(state.filledTile);
-  if (!(checkWin(boardState, turn) || state.filledTile === 9)){
-    if(state.filledTile!==0){
-    console.log('goback')
-    let lastElement;
-  if(turn==='o'){
-    lastElement = boardState.x.pop();
-    turn='x';
-  }else{
-    lastElement = boardState.o.pop();
-    turn='o';
-  }
-  state.message();
-  row[lastElement[0]].children[lastElement[1]].innerHTML= '';
-  state.filledTile--;
-  }
+  if (!(checkWin(boardState, turn) || state.filledTile === 9)) {
+    if (state.filledTile !== 0) {
+      console.log("goback");
+      let lastElement;
+      if (turn === "o") {
+        lastElement = boardState.x.pop();
+        turn = "x";
+      } else {
+        lastElement = boardState.o.pop();
+        turn = "o";
+      }
+      state.message();
+      row[lastElement[0]].children[lastElement[1]].innerHTML = "";
+      state.filledTile--;
+      if(state.filledTile==0&&AIMode==true&&isFirst==false){
+        gameStart();
+      }
+    }
   }
 }
 
@@ -259,19 +253,18 @@ function checkWin(boardState, turn) {
 function timeout(rowIndex,columnIndex){setTimeout(() => {
         console.log('time')
         handleClickTile(rowIndex, columnIndex);
-        whileTimeout=false;
+        isTimeoutActive=false;
       }, 100);}      
 
 function gameStart(){
   // if(timeout())clearTimeout(timeout());
-
   if(!isFirst){
     if (notEnd() && AIMode) {
       // const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-      if(whileTimeout===false){
+      if(isTimeoutActive===false){
         const [rowIndex, columnIndex] = aiChoiceIndex();
+        isTimeoutActive=true;
         timeout(rowIndex,columnIndex);
-      whileTimeout=true;
       }
     }
   }
@@ -280,7 +273,7 @@ function gameStart(){
 for (let i = 0; i < row.length; i++) {
   for (let k = 0; k < row[i].children.length; k++) {
     const handleClick = () => {
-      if (whileTimeout === false) {
+      if (isTimeoutActive === false) {
         if (tile(i, k) === "" && notEnd()) {
           handleClickTile(i, k);
           
@@ -288,8 +281,9 @@ for (let i = 0; i < row.length; i++) {
             const [rowIndex, columnIndex] = AIAdvanced
               ? minimax(boardState, aiPlayer).move
               : aiChoiceIndex();
-            timeout(rowIndex, columnIndex);
-            whileTimeout = true;
+              isTimeoutActive = true;
+              timeout(rowIndex, columnIndex);
+            
           }
         }
       }

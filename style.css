@@ -106,6 +106,14 @@ button{
 }
  */
 
+ .game{
+    display: none;
+}
+
+.exit{
+    display: none;
+}
+
  body {
     display: flex;
     flex-direction: column;
@@ -157,9 +165,12 @@ button{
     margin-top: 20px;
     padding: 10px 20px;
     border: 2px solid #333333;
+    border-radius: 10px;
     background-color: #ffff00;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-align: center;
+    font-size: 2rem;
 }
 
 .menu:hover {
@@ -176,8 +187,20 @@ button {
     transition: background-color 0.3s;
 }
 
+.newgame:hover{
+    border:2px solid orange;
+    background-color: #000;
+    font:black;
+}
+
 button:hover {
-    background-color: #f0f0f0;
+    background-color: #ffcc00;
+    border:2px solid orange;
+    color:blue;
+}
+
+.playagain:hover{
+    background-color: #ffcc00;
 }
 
 .select {
@@ -189,5 +212,33 @@ button:hover {
 .select input {
     height: 40px;
     width: 40px;
-    margin-right: 10px;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    font-size: 2rem;
+}
+
+/* .mode{
+    
+    align-items: center;
+    justify-content: center;
+} */
+
+.menu-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #2196F3; */
+    padding: 10px;
+  }
+
+
+  .select p {
+    font-size: 2rem; /* Adjust the font size here */
 }
