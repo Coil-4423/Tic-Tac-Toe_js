@@ -1,13 +1,13 @@
 @font-face {
     font-family: 'digitalism';
-    src: url('/fonts/digitalism.ttf');
+    src: url('fonts/digitalism.ttf');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'arcade';
-    src: url('/fonts/arcade.regular.ttf');
+    src: url('fonts/arcade.regular.ttf');
     font-weight: normal;
     font-style: normal;
 }
