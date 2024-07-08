@@ -1,12 +1,44 @@
 const winCombos = [
-  [[0, 0],[0, 1],[0, 2]],
-  [[1, 0],[1, 1],[1, 2]],
-  [[2, 0],[2, 1],[2, 2]],
-  [[0, 0],[1, 0],[2, 0]],
-  [[0, 1],[1, 1],[2, 1]],
-  [[0, 2],[1, 2],[2, 2]],
-  [[0, 0],[1, 1],[2, 2]],
-  [[2, 0],[1, 1],[0, 2]],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+  ],
+  [
+    [1, 0],
+    [1, 1],
+    [1, 2],
+  ],
+  [
+    [2, 0],
+    [2, 1],
+    [2, 2],
+  ],
+  [
+    [0, 0],
+    [1, 0],
+    [2, 0],
+  ],
+  [
+    [0, 1],
+    [1, 1],
+    [2, 1],
+  ],
+  [
+    [0, 2],
+    [1, 2],
+    [2, 2],
+  ],
+  [
+    [0, 0],
+    [1, 1],
+    [2, 2],
+  ],
+  [
+    [2, 0],
+    [1, 1],
+    [0, 2],
+  ],
 ];
 
 const randomAI = document.getElementById("vsRandomAI");
@@ -19,20 +51,20 @@ const row = document.querySelectorAll(".row");
 const message = document.getElementById("message");
 const O = document.getElementById("o");
 const X = document.getElementById("x");
-const first = document.getElementById('first');
-const second =document.getElementById('second')
+const first = document.getElementById("first");
+const second = document.getElementById("second");
 const newGame = document.getElementById("newgame");
-const aichoice = document.getElementById('aichoice');
-const game =document.getElementById("game");
-const mode = document.getElementById('mode');
-const exit =document.getElementById('exit');
-const goback = document.getElementById('goback');
+const aichoice = document.getElementById("aichoice");
+const game = document.getElementById("game");
+const mode = document.getElementById("mode");
+const exit = document.getElementById("exit");
+const goback = document.getElementById("goback");
 let isTimeoutActive = false;
 
 let isFirst = true;
 let humanPlayer = "o";
 let aiPlayer = "x";
-let turn='o';
+let turn = "o";
 let boardState = {
   o: [],
   x: [],
@@ -42,40 +74,38 @@ let AIAdvanced = true;
 
 class State {
   constructor() {
-    this.result = '';
-    this.winner = '';
+    this.result = "";
+    this.winner = "";
     this.filledTile = 0;
   }
 
   message() {
-    if(this.winner!==''||this.result!==''){
-      if(this.winner==humanPlayer){
+    if (this.winner !== "" || this.result !== "") {
+      if (this.winner == humanPlayer) {
         message.innerHTML = `You ${this.result}`;
-      }else if(this.winner==aiPlayer){
-        message.innerHTML = `Computer ${this.result}`
-      }else{
+      } else if (this.winner == aiPlayer) {
+        message.innerHTML = `Computer ${this.result}`;
+      } else {
         message.innerHTML = `${this.winner} ${this.result}`;
       }
-    }
-    else message.innerHTML = `Its ${turn} turn`;
+    } else message.innerHTML = `It's ${turn} turn`;
   }
 
   boardReset() {
-
-      if(isFirst){
-        console.log(humanPlayer)
-        turn = humanPlayer;
-      }else{
-        console.log(aiPlayer)
-        turn = aiPlayer;
-      }
+    if (isFirst) {
+      console.log(humanPlayer);
+      turn = humanPlayer;
+    } else {
+      console.log(aiPlayer);
+      turn = aiPlayer;
+    }
     for (let i = 0; i < row.length; i++) {
       for (let k = 0; k < row[i].children.length; k++) {
         row[i].children[k].innerHTML = "";
       }
     }
-    this.result = '';
-    this.winner = '';
+    this.result = "";
+    this.winner = "";
     this.filledTile = 0;
     this.message();
     boardState = {
@@ -98,15 +128,15 @@ menu.addEventListener("click", function () {
   exit.style.display = "block";
 });
 
-exit.addEventListener('click',function(){
-  mode.style.display="none";
-  game.style.display="block";
-})
+exit.addEventListener("click", function () {
+  mode.style.display = "none";
+  game.style.display = "flex";
+});
 
-vshuman.addEventListener('click',function(){
-  AIMode=false;
+vshuman.addEventListener("click", function () {
+  AIMode = false;
   gameModeDisplay();
-})
+});
 
 randomAI.addEventListener("click", function () {
   AIMode = true;
@@ -119,44 +149,48 @@ advancedAI.addEventListener("click", function () {
   gameModeDisplay();
 });
 
-newGame.addEventListener('click',function(){
-  mode.style.display='none'
-  game.style.display='block';
+newGame.addEventListener("click", function () {
+  mode.style.display = "none";
+  game.style.display = "flex";
   gameModeDisplay();
   state.boardReset();
   gameStart();
-})
+});
 
 O.addEventListener("click", function () {
-  humanPlayer='o';
-  aiPlayer = 'x' ;
+  humanPlayer = "o";
+  aiPlayer = "x";
 });
 
 X.addEventListener("click", function () {
-  humanPlayer='x';
-  aiPlayer='o';
+  humanPlayer = "x";
+  aiPlayer = "o";
 });
 
-first.addEventListener('click',function(){
-  isFirst=true;
-})
-second.addEventListener('click',function(){
-  isFirst=false;
-})
+first.addEventListener("click", function () {
+  isFirst = true;
+});
+second.addEventListener("click", function () {
+  isFirst = false;
+});
 
-goback.addEventListener('click',function(){
+goback.addEventListener("click", function () {
   handleGoback();
-  if(AIMode){
+  if (AIMode) {
     handleGoback();
   }
-})
+});
 
-function gameModeDisplay(){
-  gameMode.innerHTML= AIMode? (AIAdvanced? `vsAdvancedAI`:`vsRandomAI`):`vsHuman`;
-} 
+function gameModeDisplay() {
+  gameMode.innerHTML = AIMode
+    ? AIAdvanced
+      ? `vsAdvancedAI`
+      : `vsRandomAI`
+    : `vsHuman`;
+}
 
-function turnDisplay(){
-  gameMode.innerHTML= turn=='o'? 'o':`vsHuman`;
+function turnDisplay() {
+  gameMode.innerHTML = turn == "o" ? "o" : `vsHuman`;
 }
 
 function tile(i, k) {
@@ -167,8 +201,10 @@ function noChosenTiles() {
   let tiles = [];
   for (let i = 0; i < 3; i++) {
     for (let k = 0; k < 3; k++) {
-      if (!boardState.o.some(coord => coord[0] === i && coord[1] === k) &&
-          !boardState.x.some(coord => coord[0] === i && coord[1] === k)) {
+      if (
+        !boardState.o.some((coord) => coord[0] === i && coord[1] === k) &&
+        !boardState.x.some((coord) => coord[0] === i && coord[1] === k)
+      ) {
         tiles.push([i, k]);
       }
     }
@@ -196,10 +232,8 @@ function aiChoiceIndex() {
   return index;
 }
 
-function notEnd(){
-  return (
-  state.result !== "win" &&
-  state.result !== "draw")
+function notEnd() {
+  return state.result !== "win" && state.result !== "draw";
 }
 
 function handleGoback() {
@@ -218,7 +252,7 @@ function handleGoback() {
       state.message();
       row[lastElement[0]].children[lastElement[1]].innerHTML = "";
       state.filledTile--;
-      if(state.filledTile==0&&AIMode==true&&isFirst==false){
+      if (state.filledTile == 0 && AIMode == true && isFirst == false) {
         gameStart();
       }
     }
@@ -228,43 +262,47 @@ function handleGoback() {
 function handleClickTile(i, k) {
   row[i].children[k].innerHTML = turn;
   state.filledTile++;
-  
+
   boardState[turn].push([i, k]);
-  
+
   if (checkWin(boardState, turn) || state.filledTile === 9) {
     state.result = checkWin(boardState, turn) ? "win" : "draw";
-    state.winner = checkWin(boardState, turn) ? turn : '';
+    state.winner = checkWin(boardState, turn) ? turn : "";
   } else {
-    console.log(turn)
+    console.log(turn);
     turn = turn === "o" ? "x" : "o";
-    console.log(turn)
+    console.log(turn);
   }
   state.message();
 }
 
 function checkWin(boardState, turn) {
-  return winCombos.some(winCombo => winCombo.every(coord => 
-    (turn === "o" ? boardState.o : boardState.x).some(boardCoord => 
-      boardCoord[0] === coord[0] && boardCoord[1] === coord[1]
+  return winCombos.some((winCombo) =>
+    winCombo.every((coord) =>
+      (turn === "o" ? boardState.o : boardState.x).some(
+        (boardCoord) => boardCoord[0] === coord[0] && boardCoord[1] === coord[1]
+      )
     )
-  ));
+  );
 }
 
-function timeout(rowIndex,columnIndex){setTimeout(() => {
-        console.log('time')
-        handleClickTile(rowIndex, columnIndex);
-        isTimeoutActive=false;
-      }, 100);}      
+function timeout(rowIndex, columnIndex) {
+  setTimeout(() => {
+    console.log("time");
+    handleClickTile(rowIndex, columnIndex);
+    isTimeoutActive = false;
+  }, 100);
+}
 
-function gameStart(){
+function gameStart() {
   // if(timeout())clearTimeout(timeout());
-  if(!isFirst){
+  if (!isFirst) {
     if (notEnd() && AIMode) {
       // const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
-      if(isTimeoutActive===false){
+      if (isTimeoutActive === false) {
         const [rowIndex, columnIndex] = aiChoiceIndex();
-        isTimeoutActive=true;
-        timeout(rowIndex,columnIndex);
+        isTimeoutActive = true;
+        timeout(rowIndex, columnIndex);
       }
     }
   }
@@ -276,14 +314,13 @@ for (let i = 0; i < row.length; i++) {
       if (isTimeoutActive === false) {
         if (tile(i, k) === "" && notEnd()) {
           handleClickTile(i, k);
-          
+
           if (notEnd() && AIMode) {
             const [rowIndex, columnIndex] = AIAdvanced
               ? minimax(boardState, aiPlayer).move
               : aiChoiceIndex();
-              isTimeoutActive = true;
-              timeout(rowIndex, columnIndex);
-            
+            isTimeoutActive = true;
+            timeout(rowIndex, columnIndex);
           }
         }
       }
@@ -309,7 +346,7 @@ function minimax(newBoard, player) {
     let move = {};
     move.index = availSpots[i];
 
-    if (player === 'o') {
+    if (player === "o") {
       newBoard.o.push(availSpots[i]);
     } else {
       newBoard.x.push(availSpots[i]);
@@ -323,7 +360,7 @@ function minimax(newBoard, player) {
       move.score = result.score;
     }
 
-    if (player === 'o') {
+    if (player === "o") {
       newBoard.o.pop();
     } else {
       newBoard.x.pop();
@@ -337,8 +374,10 @@ function minimax(newBoard, player) {
   let bestScore = player === aiPlayer ? -10000 : 10000;
 
   for (let i = 0; i < moves.length; i++) {
-    if ((player === aiPlayer && moves[i].score > bestScore) ||
-        (player !== aiPlayer && moves[i].score < bestScore)) {
+    if (
+      (player === aiPlayer && moves[i].score > bestScore) ||
+      (player !== aiPlayer && moves[i].score < bestScore)
+    ) {
       bestScore = moves[i].score;
       bestMove = moves[i].coord;
     }
