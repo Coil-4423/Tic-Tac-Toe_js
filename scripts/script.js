@@ -81,13 +81,19 @@ class State {
 
   message() {
     if (this.winner !== "" || this.result !== "") {
-      if (this.winner == humanPlayer) {
+      if(AIMode==true){
+        if (this.winner == humanPlayer) {
         message.innerHTML = `You ${this.result}`;
       } else if (this.winner == aiPlayer) {
         message.innerHTML = `Computer ${this.result}`;
       } else {
         message.innerHTML = `${this.winner} ${this.result}`;
       }
+      }
+      else{
+        message.innerHTML = `${turn} ${this.result}`;
+      }
+      
     } else message.innerHTML = `It's ${turn} turn`;
   }
 

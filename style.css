@@ -74,13 +74,13 @@ h1 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    font-size: 3em;
+    font-size: 4em;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .cell:hover {
-    background-color: #e0e0e0;
+    background-color: #d9d9d9;
 }
 
 .message {
