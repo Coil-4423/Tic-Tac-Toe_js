@@ -295,10 +295,8 @@ function timeout(rowIndex, columnIndex) {
 }
 
 function gameStart() {
-  // if(timeout())clearTimeout(timeout());
   if (!isFirst) {
     if (notEnd() && AIMode) {
-      // const [rowIndex, columnIndex] = AIAdvanced ? minimax(boardState, turn).move : aiChoiceIndex();
       if (isTimeoutActive === false) {
         const [rowIndex, columnIndex] = aiChoiceIndex();
         isTimeoutActive = true;

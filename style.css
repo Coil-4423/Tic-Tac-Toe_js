@@ -1,4 +1,4 @@
- @font-face {
+@font-face {
     font-family: 'digitalism';
     src: url('/fonts/digitalism.ttf');
     font-weight: normal;
@@ -12,7 +12,7 @@
     font-style: normal;
 }
 
-.game{
+.game {
     display: none;
     flex-direction: row;
     justify-content: center;
@@ -20,16 +20,16 @@
 }
 
 @media only screen and (max-width: 600px) {
-    .game{
+    .game {
         flex-direction: column;
     }
 }
 
-.exit{
+.exit {
     display: none;
 }
 
- body {
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -41,14 +41,14 @@
     font-family: 'arcade';
     /* background-color: #303030; */
     background-image: linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%),
-      linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%); 
-  background-position: 0 0, 30px 30px;
-  background-size: 60px 60px;
-  background-color: #363636;  
-    color:#ffffff
+        linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%);
+    background-position: 0 0, 30px 30px;
+    background-size: 60px 60px;
+    background-color: #363636;
+    color: #ffffff
 }
 
-h1{
+h1 {
     font-size: 4em;
     text-align: center;
     margin: 0;
@@ -61,7 +61,7 @@ h1{
     background-color: #ffffff;
     padding: 10px;
     border-radius: 10px;
-    color:#000
+    color: #000
 }
 
 .cell {
@@ -90,8 +90,8 @@ h1{
     text-align: center;
     background-color: #000000;
     font-size: 1.5em;
-    color:greenyellow
-    /* font-family:'digitalism' */
+    color: greenyellow
+        /* font-family:'digitalism' */
 }
 
 .menu {
@@ -108,6 +108,8 @@ h1{
 
 .menu:hover {
     background-color: #ffcc00;
+    border: 2px solid orange;
+    color: blue;
 }
 
 button {
@@ -115,25 +117,25 @@ button {
     padding: 10px 20px;
     border: 2px solid #333333;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 1.5rem;
     font-family: 'arcade';
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.newgame:hover{
-    border:2px solid orange;
+.newgame:hover {
+    border: 2px solid orange;
     background-color: #000;
-    font:black;
+    font: black;
 }
 
 button:hover {
     background-color: #ffcc00;
-    border:2px solid orange;
-    color:blue;
+    border: 2px solid orange;
+    color: blue;
 }
 
-.playagain:hover{
+.playagain:hover {
     background-color: #ffcc00;
 }
 
@@ -151,13 +153,7 @@ button:hover {
     font-size: 2rem;
 }
 
-/* .mode{
-    
-    align-items: center;
-    justify-content: center;
-} */
-
-.menu-buttons{
+.menu-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -166,29 +162,25 @@ button:hover {
 .grid-container {
     display: grid;
     grid-template-columns: 1 1;
-    /* justify-content: center; */
     align-items: center;
-    /* background-color: #2196F3; */
+    justify-content: center;
     padding: 10px;
-  }
-
-
-  .select p {
-    font-size: 2rem; /* Adjust the font size here */
-    margin:0;
 }
 
-.gameinfo{
-    margin-left:2rem;
-    color:#000
+
+.select p {
+    font-size: 2rem;
+    /* Adjust the font size here */
+    margin: 0;
+}
+
+.gameinfo {
+    margin-left: 2rem;
+    color: #000
 }
 
 @media only screen and (max-width: 600px) {
-    .gameinfo{
-        margin:0;
+    .gameinfo {
+        margin: 0;
     }
 }
-
-
-
-
